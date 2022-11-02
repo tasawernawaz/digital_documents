@@ -73,3 +73,11 @@ class DocumentViewSetTests(APITestCase):
         self.assertEqual(response.status_code, 200)
         doc_in_db = Document.objects.get(pk=self.document.id)
         self.assertEqual(doc_in_db.short_description, post_data["short_description"])
+
+
+class TopicViewSetTests(APITestCase):
+    pass
+
+
+class FolderViewSetTests(APITestCase):
+    pass

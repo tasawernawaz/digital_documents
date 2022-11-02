@@ -26,6 +26,11 @@ Run the following command from `/backend`
 
 API docs should be availabe at http://127.0.0.1:8000/swagger/
 
+### Run tests
+
+- To run all tests use `pytest`
+- To run specific test file use path to the class or test mehtod. e.g `pytest tests/test_api.py::DocumentViewSetTests::test_list_documents`
+
 ## Filtering on folders and Topics
 
 Documents can be filtered based on folder name and topics (comma separated). e.g
