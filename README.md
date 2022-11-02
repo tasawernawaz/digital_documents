@@ -1,5 +1,5 @@
-# digital_documents
-A test project to store digital documents in folders.
+# Digital Documents Store
+A test project to store digital documents in folders. For the time being I am assuming that there wont be any authentication.
 
 ### How to run
 
@@ -33,3 +33,8 @@ Documents can be filtered based on folder name and topics (comma separated). e.g
     1. `?folder=english&topics=gaming,learning`
     2. `?folder=english`
     3. `?topics=gaming,learning`
+
+
+## ERD
+
+ERD available at `/docs` folder.
