@@ -16,8 +16,8 @@ class FolderSerializer(serializers.ModelSerializer):
 
 
 class DocumentSerializer(serializers.ModelSerializer):
-    folder = FolderSerializer()
-    topics = TopicSerializer(many=True)
+    # folder = FolderSerializer()
+    # topics = TopicSerializer(many=True)
 
     class Meta:
         model = Document

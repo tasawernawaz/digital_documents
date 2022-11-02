@@ -1,3 +1,4 @@
+from django.core.files.uploadedfile import SimpleUploadedFile
 from django.urls import reverse
 from rest_framework.test import APITestCase
 
@@ -29,6 +30,7 @@ class DocumentViewSetTests(APITestCase):
 
     def test_delete_document(self):
         """Verify that delete API deletes a document."""
+        # TODO check if files also deleted
         path = reverse(self.detail_path, kwargs={"pk": self.document.id})
         response = self.client.delete(path)
         self.assertEqual(response.status_code, 204)
@@ -37,26 +39,37 @@ class DocumentViewSetTests(APITestCase):
     def test_create_document(self):
         """Verify that users can create a document."""
 
-        # Create a sample test file on the fly
-        fpath = "testfile.txt"
-        test_file = open(fpath, "w")
-        test_file.write("Hello World!, this is a testing file.")
-        test_file.close()
-        test_file = open(fpath, "r")
+        upload_file = SimpleUploadedFile("/file.txt", b"abc", content_type="text/plain")
         post_data = {
-            "document": test_file,
+            "document": upload_file,
             "short_description": "test short description",
             "long_description": "test long description",
             "folder": self.folder.id,
-            "topics": self.topics[0].id,
+            "topics": [self.topics[0].id],
         }
-
         response = self.client.post(
-            reverse("documents-list"), data=post_data, format="json"
+            reverse("documents-list"), data=post_data, format="multipart"
         )
         self.assertEqual(response.status_code, 201)
         self.assertTrue(Document.objects.get(pk=response.data["id"]))
 
     def test_update_document(self):
         """Verify that user can update document."""
-        pass
+        new_upload_file = SimpleUploadedFile(
+            "/file.txt", b"abc", content_type="text/plain"
+        )
+        post_data = {
+            "document": new_upload_file,
+            "short_description": "updated - test short description",
+            "long_description": "updated - test long description",
+            "folder": self.folder.id,
+            "topics": [self.topics[0].id],
+        }
+        response = self.client.put(
+            reverse("documents-detail", args=(self.document.id,)),
+            data=post_data,
+            format="multipart",
+        )
+        self.assertEqual(response.status_code, 200)
+        doc_in_db = Document.objects.get(pk=self.document.id)
+        self.assertEqual(doc_in_db.short_description, post_data["short_description"])
