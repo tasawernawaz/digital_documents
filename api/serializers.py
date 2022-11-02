@@ -15,10 +15,16 @@ class FolderSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
-class DocumentSerializer(serializers.ModelSerializer):
-    # folder = FolderSerializer()
-    # topics = TopicSerializer(many=True)
+class DocumentReadSerializer(serializers.ModelSerializer):
+    folder = FolderSerializer(read_only=True)
+    topics = TopicSerializer(read_only=True, many=True)
 
+    class Meta:
+        model = Document
+        fields = "__all__"
+
+
+class DocumentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Document
         fields = "__all__"
